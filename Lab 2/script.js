@@ -250,49 +250,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function mergeSort(arr, l, r) {
-        if (l < r) {
-            const m = Math.floor((l + r) / 2);
-            await mergeSort(arr, l, m);
-            await mergeSort(arr, m + 1, r);
-            await merge(arr, l, m, r);
-        }
+    if (l < r) {
+        const m = Math.floor((l + r) / 2);
+        await mergeSort(arr, l, m);
+        await mergeSort(arr, m + 1, r);
+        await merge(arr, l, m, r);
     }
+}
 
-    async function merge(arr, l, m, r) {
-        const n1 = m - l + 1;
-        const n2 = r - m;
-        const L = new Array(n1);
-        const R = new Array(n2);
+async function merge(arr, l, m, r) {
+    const n1 = m - l + 1;
+    const n2 = r - m;
+    const L = new Array(n1);
+    const R = new Array(n2);
 
-        for (let i = 0; i < n1; i++) L[i] = arr[l + i];
-        for (let j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
+    for (let i = 0; i < n1; i++) L[i] = arr[l + i];
+    for (let j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
 
-        let i = 0, j = 0, k = l;
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                arr[k] = L[i];
-                i++;
-            } else {
-                arr[k] = R[j];
-                j++;
-            }
-            await drawWithHighlights(arr, { [k]: 'red' });
-            k++;
-        }
-
-        while (i < n1) {
+    let i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
             arr[k] = L[i];
-            await drawWithHighlights(arr, { [k]: 'red' });
-            k++;
-        }
-
-        while (j < n2) {
+            i++;
+        } else {
             arr[k] = R[j];
-            await drawWithHighlights(arr, { [k]: 'red' });
             j++;
-            k++;
         }
+        await drawWithHighlights(arr, { [k]: 'red' }); // Vizualizare
+        k++;
     }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        await drawWithHighlights(arr, { [k]: 'red' }); // Vizualizare
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        await drawWithHighlights(arr, { [k]: 'red' }); // Vizualizare
+        j++;
+        k++;
+    }
+}
 
     async function heapSort(arr) {
         const n = arr.length;
